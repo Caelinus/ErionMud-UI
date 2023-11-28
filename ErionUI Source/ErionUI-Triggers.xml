@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage>
+		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>ErionUI</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName>ErionUI</packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList />
+			<regexCodePropertyList />
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Capture</name>
+				<script></script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList />
+				<regexCodePropertyList />
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>CopytoBuffer</name>
+					<script>  selectCurrentLine()
+  copy()
+  appendBuffer("MainBuffer")
+  </script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>PromptCapture</name>
+					<script>local CHP = matches.CHP
+local MHP = matches.MHP
+local CMP = matches.CMP
+local MMP = matches.MMP
+local THP = matches.THP
+local TNM = matches.TNM
+local CXP = matches.CXP
+local NXP = matches.NXP
+local GLD = matches.GLD
+local QPS = matches.QPS
+local HPS = matches.HPS
+local RNM = matches.RNM
+local EXT = matches.EXT
+local LVL = matches.LVL
+local FLV = matches.FLV
+local LMP = matches.LMP
+local ANM = matches.ANM
+local RMS = matches.RMS
+local VNM = matches.VNM
+local QTM = matches.QTM
+local ETM = matches.ETM
+local GTM = matches.GTM
+local JTM = matches.JTM
+local XPE = matches.XPE
+local QPE = matches.QPE
+local QTE = matches.QTE
+local MDP = matches.MDP
+local PHP = matches.PHP
+local PRE = matches.PRE
+
+selectCurrentLine()
+deleteLine()
+
+moveCursor("MainBuffer", 0, getLastLineNumber("MainBuffer")-2)
+deleteLine("MainBuffer")
+deleteLine("MainBuffer")
+
+raiseEvent("GUI_UpdateStatus", LVL, FLV, NXP, GLD, QPS, HPS, MDP, QTM, ETM, GTM, JTM, XPE, QPE, QTE) 
+raiseEvent("GUI_UpdatePrompt", CHP, MHP, CMP, MMP, THP, TNM, LMP, PRE, PHP) 
+raiseEvent("GUI_UpdateMapName", RNM, ANM, RMS, VNM)
+
+-- prompt #1%h#2%H#3%m#4%M#5%p#6%T#7%x#8%X#9%g#10%C#11%u#12%r#13%e#14%L#15%I#16%n#17%B#18%S#19%R#20%f#21%F#22%J#23%j#24%G#25%k#26%K#27%N#28%P#
+-- regex = ^(?'PRE'[^#]+|)#1(?'CHP'[^#]+|)#2(?'MHP'[^#]+|)#3(?'CMP'[^#]+|)#4(?'MMP'[^#]+|)#5(?'THP'[^#]+|)#6(?'TNM'[^#]+|)#7(?'CXP'[^#]+|)#8(?'NXP'[^#]+|)#9(?'GLD'[^#]+|)#10(?'QPS'[^#]+|)#11(?'HPS'[^#]+|)#12(?'RNM'[^#]+|)#13(?'EXT'[^#]+|)#14(?'LVL'[^#]+|)#15(?'FLV'[^#]+|)#16(?'LMP'[^#]+|)#17(?'ANM'[^#]+|)#18(?'RMS'[^#]+|)#19(?'VNM'[^#]+|)#20(?'QTM'[^#]+|)#21(?'ETM'[^#]+|)#22(?'GTM'[^#]+|)#23(?'JTM'[^#]+|)#24(?'XPE'[^#]+|)#25(?'QPE'[^#]+|)#26(?'QTE'[^#]+|)#27(?'MDP'[^#]+|)#28(?'PHP'[^#]+)#
+
+--[[
+1:Current HP = CHP
+2:Max Hp = MHP
+3:Current Mana = MCP
+4:Max Mana = MMP
+5:Target Health = THP
+6:Target Name = TNM
+7:Current EXP = CXP
+8:XP to next = NXP
+9:Gold = GLD
+10:Quest Points = QPS
+11:House Points = HPS
+12:Room Name = RNM
+13:Exits = EXT
+14:Level = LVL
+15:Faux Level = FLV
+16:Limit Percent = LMP
+17:Area Name = ANM
+18:Room Sector = RMS
+19:Room VNum = VNM
+20:Quest Timer = QTM
+21:Expedition Timer = ETM
+22:Global Quest = GTM
+23:Junkyard Timer = JTM
+24:EXP Event = XPE
+25:QP Event = QPE
+26:Quest Timer Event = QTE
+27:MudPies = MDP
+28:Pet HP = PHP
+00:PromptPrefix = PRE
+--]]</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^(?'PRE'[^#]+|)#1(?'CHP'[^#]+|)#2(?'MHP'[^#]+|)#3(?'CMP'[^#]+|)#4(?'MMP'[^#]+|)#5(?'THP'[^#]+|)#6(?'TNM'[^#]+|)#7(?'CXP'[^#]+|)#8(?'NXP'[^#]+|)#9(?'GLD'[^#]+|)#10(?'QPS'[^#]+|)#11(?'HPS'[^#]+|)#12(?'RNM'[^#]+|)#13(?'EXT'[^#]+|)#14(?'LVL'[^#]+|)#15(?'FLV'[^#]+|)#16(?'LMP'[^#]+|)#17(?'ANM'[^#]+|)#18(?'RMS'[^#]+|)#19(?'VNM'[^#]+|)#20(?'QTM'[^#]+|)#21(?'ETM'[^#]+|)#22(?'GTM'[^#]+|)#23(?'JTM'[^#]+|)#24(?'XPE'[^#]+|)#25(?'QPE'[^#]+|)#26(?'QTE'[^#]+|)#27(?'MDP'[^#]+|)#28(?'PHP'[^#]+|)#</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>ChatCapture</name>
+					<script>selectCurrentLine()
+copy()
+deleteLine() --Remove Captured Line (Comment out to disable)
+
+moveCursorEnd("MainBuffer")
+selectCurrentLine("MainBuffer")
+deleteLine("MainBuffer")
+
+moveCursorUp(2)
+--selectCurrentLine()
+
+for i = 1, 3, 1 do
+  if getCurrentLine() == "" then
+    debugc("Deleted: "..getCurrentLine())
+    deleteLine()
+  end
+  moveCursorDown()
+  selectCurrentLine()
+end
+
+
+appendBuffer("ChatLog")
+appendBuffer("ChatBuffer")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^\[chat\]</string>
+						<string>^\[newbie\]</string>
+						<string>^\[grats\]</string>
+						<string>^\[music\]</string>
+						<string>^\[quote\]</string>
+						<string>^\[roleplay\]</string>
+						<string>^\[client\]</string>
+						<string>^\[GUESS\]</string>
+						<string>^\[Quest\]</string>
+						<string>^\[Levels\]</string>
+						<string>^\[Global Quest\]</string>
+						<string>^\[Newbies\]</string>
+						<string>^\[Logout\]</string>
+						<string>^\[Login\]</string>
+						<string>^\&lt;\[mudevent\]\&gt; </string>
+						<string>^\[SCRAMBLE\]</string>
+						<string>^The scrambled phrase is\:</string>
+						<string>^\[Player Deaths\]</string>
+						<string>^\[Class\]</string>
+						<string>^\[COLOSSEUM\]</string>
+						<string>^\[Healers\]</string>
+						<string>^Auction\:</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>CaptureScore</name>
+					<script>CleanScoreBuffer()
+selectCurrentLine()
+copy()
+appendBuffer("ScoreBuffer")
+moveCursorDown("ScoreBuffer")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>16</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^\+-+\+$</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>ExitsCapture</name>
+					<script>clearWindow("ExitsConsole")
+selectCurrentLine()
+copy()
+ExitsConsole:appendBuffer()
+replaceLine("")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>(^\[Exits\:.+)</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+			</TriggerGroup>
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>ANSIMapCapture</name>
+				<script></script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList />
+				<regexCodePropertyList />
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Map Trigger (Border)</name>
+					<script>if CMap == 0 then
+  MapConsole:clear()
+  
+  selectCaptureGroup(1)
+  copy()
+  MapConsole:appendBuffer()
+  replace()
+  
+  CMap = 1
+else
+  
+  selectCaptureGroup(1)
+  copy()
+  MapConsole:appendBuffer()
+  replace()
+
+  CMap = 2
+end
+
+if CMap == 2 then
+  CMap = 0
+end</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>(^[+]\-{9}[+]  )</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Map Trigger (Map)</name>
+					<script>selectCaptureGroup(1)
+copy()
+MapConsole:appendBuffer()
+replace()</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>(^\|.{9}\|  )</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Map Cleaner</name>
+					<script>selectCaptureGroup(1)
+replace("")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>(^             )[^ ]</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Spacer</name>
+					<script>echo("\n  ")
+selectCaptureGroup(1)
+replace("")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>(\(Id .+[^)]\))</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+			</TriggerGroup>
+		</TriggerGroup>
+	</TriggerPackage>
+</MudletPackage>

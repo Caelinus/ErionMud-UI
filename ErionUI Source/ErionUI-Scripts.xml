@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<ScriptPackage>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>ErionUI</name>
+			<packageName>ErionUI</packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>ErionGUI Start Event</name>
+				<packageName></packageName>
+				<script>function StartUp ()
+  
+  --A couple of variables that I need to ensure are set at 0 initally
+  CMap = 0
+  Score_Buffer_Count = 0
+  raiseEvent("InitializeUI")
+  --Silent_Line_Count  = 0
+  
+  
+  
+  tempRegexTrigger("Welcome to Erion!|Reconnecting",
+    function()
+      raiseEvent("SetDefaultMudSettings")
+      local ConnectType = matches[1]
+      echo("\n Match: " .. ConnectType)
+      
+      tempTimer(1, [[
+        cecho("&lt;green&gt;&lt;b&gt;If this is you first time running the UI, ")
+        cechoLink("&lt;purple&gt;CLICK HERE!!", function()
+          setFont("Bitstream Vera Sans Mono")
+          setFontSize(11) end, 
+        "UI Setup", true)
+        cecho("\n&lt;green&gt;&lt;b&gt;This will set the font to a uniform size.")
+      ]])
+      
+      if ConnectType == "Reconnecting" then
+      tempTimer(1.5, [[
+        send("look", false)
+      ]])
+      end
+      
+    end, 1)
+end
+
+registerAnonymousEventHandler("sysConnectionEvent", "StartUp")</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>UI System Settings Event</name>
+				<packageName></packageName>
+				<script>function SetMudSettings()
+  send("toggle +tick", false)
+  send("toggle +compact", false)
+  send("prompt #1%h#2%H#3%m#4%M#5%p#6%T#7%x#8%X#9%g#10%C#11%u#12%r#13%e#14%L#15%I#16%n#17%B#18%S#19%R#20%f#21%F#22%J#23%j#24%G#25%k#26%K#27%N#28%P#", false)
+end
+
+registerAnonymousEventHandler("SetDefaultMudSettings", "SetMudSettings")</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Initialize UI Event</name>
+				<packageName></packageName>
+				<script>function InitUI ()
+
+--Buffers for word wrapping
+  createBuffer("MainBuffer")
+  createBuffer("ChatBuffer")
+  createBuffer("ScoreBuffer")
+
+--UI Functions
+
+--Setting Borders
+  setBorderRight(0)
+  setBorderLeft(275)
+  setBorderBottom(40)
+  setBorderColor(0, 0, 0)
+
+--Left (LeftUI Functions)
+  BuildLeftContainer()
+  BuildErionLabel()
+  BuildStatsConsole()
+  BuildMapNameConsole()
+  BuildMapConsole()
+  BuildExitsConsole()
+  
+--Right (LeftUI Functions)
+  BuildRightContainer()
+  BuildChatConsole()
+  --BuildMapLable()
+  --BuildMapper()
+
+  
+  RightContainer:attachToBorder("right")
+  RightContainer:connectToBorder("right")
+  --RightContainer:lockContainer("light")
+  
+--Bottom (BottomUI Functions)
+  BuildStatusBarContainer()
+  SetCMDStyle()
+  SetBarStyle()
+
+end
+
+registerAnonymousEventHandler("InitializeUI", "InitUI")</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>FunctionLibrary</name>
+				<packageName></packageName>
+				<script>--Just functions I may need to call
+
+--Rounidng Function
+  function round(x, n)
+    n = math.pow(10, n or 0)
+    x = x * n
+    if x &gt;= 0 then x = math.floor(x + 0.5) else x = math.ceil(x - 0.5) end
+    return x / n
+  end
+  
+--A counter to keep ScoreBuffer/Window clean
+  function CleanScoreBuffer ()
+    if Score_Buffer_Count == 0 then
+      clearWindow("ScoreBuffer")
+      Score_Buffer_Count = 0
+      Score_Buffer_Count = Score_Buffer_Count + 1
+    elseif Score_Buffer_Count == 16 then
+      Score_Buffer_Count = 0
+    else
+      Score_Buffer_Count = Score_Buffer_Count + 1
+    end
+  end
+  
+  function SilentScoreCapture()
+    send("score", false)
+    tempTrigger("For more character information use aff, mults, sigil, worth, and whois.",
+      function()
+        moveCursor("main", 1, getLastLineNumber("main")-1)
+        for i = 0, 17, 1 do
+          deleteLine()
+          moveCursorDown()
+        end
+      end, 1)
+  end
+    </script>
+				<eventHandlerList />
+			</Script>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>GUI Events and Functions</name>
+				<packageName></packageName>
+				<script></script>
+				<eventHandlerList />
+				<Script isActive="yes" isFolder="no">
+					<name>BottomUI Functions</name>
+					<packageName></packageName>
+					<script>-- Functions to handle building the bottom UI
+
+function BuildStatusBarContainer () --Define Status Bar
+  StatusBar = Geyser.MiniConsole:new({
+    name = "StatusBar",                   
+    x=400, y="100%-40",                   
+    width = 1100, height=40,
+    scrollBar = false,            
+    color = "black",
+    fontSize = 11,
+  })  
+
+end
+
+function SetCMDStyle () --Move Command Line
+
+  setCmdLineStyleSheet("main", [[
+    QPlainTextEdit {
+      padding-left: 270px;       /* change 100 to your number */
+      background-color: black;   /* change it to your background color */
+    }
+  ]])
+
+end
+
+function SetBarStyle () --Sets bar settings
+  --Health
+  hpbar = Geyser.Gauge:new({
+    name="hpbar",
+    x=275, y="100%-38",
+    width=120, height=13,
+  })
+  hpbar.front:setStyleSheet([[
+    background-color: #cc0000;
+    border-radius: 2;
+  ]])
+  hpbar.back:setStyleSheet([[
+    background-color: #660000;
+    border-radius: 2;
+  ]])
+  hpbar.text:setStyleSheet([[
+    text-align: right;
+    padding-right: 5px;
+  ]])
+  hpbar:setAlignment("center")
+
+  --Energy
+  enbar = Geyser.Gauge:new({
+    name="enbar",
+    x=275, y="100%-18",
+    width=120, height=13,
+  })
+  enbar.front:setStyleSheet([[
+    background-color: #3d85c6;
+    border-radius: 2;
+  ]])
+  enbar.back:setStyleSheet([[
+    background-color: #073763;
+    border-radius: 2;
+  ]])
+  enbar.text:setStyleSheet([[
+    text-align: right;
+    padding-right: 5px;
+  ]])
+  enbar:setAlignment("center")
+end</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>LeftUI Functions</name>
+					<packageName></packageName>
+					<script>-- Define functions to draw left container UI
+
+function BuildLeftContainer()
+  LeftContainer = Geyser.Container:new({
+  Name = "MapContainer",
+  x=0, y=0,
+  width = 265, height="100%",
+})
+end
+
+function BuildErionLabel()
+  ErionLabel = Geyser.Label:new({
+    name="ErionLabel",
+    x=10, y=0,
+    width = "98%", height = "70px",
+    }, LeftContainer)
+  ErionLabel:setColor("Black")
+  ErionLabel:setFontSize(20)
+  --ErionLabel:setFont("Bitstream Vera Sans Mono")
+  ErionLabel:setFont("Copperplate Gothic Light")
+  ErionLabel:echo("ErionMud", "grey", "cub")
+end
+
+function BuildStatsConsole()
+  StatsConsole = Geyser.MiniConsole:new({
+    name = "StatsConsole",
+    x = 30, y = 80,
+    width = "98%-30", height = "400px",
+    autoWrap = false,
+    scrollBar = false,
+    color = "black",
+    fontSize = 10,
+  }, LeftContainer)
+end
+
+function BuildMapNameConsole()
+  MapNameConsole = Geyser.MiniConsole:new({
+    name = "MapNameConsole",
+    x = 30, y = "100%-433px",
+    width = "240px", height = "100px",
+    autoWrap = false,
+    scrollBar = false,
+    color = "black",
+    fontSize = 9,
+  }, LeftContainer)
+end
+
+function BuildMapConsole()
+  MapConsole = Geyser.MiniConsole:new({
+    name = "MapConsole",
+    x= 65, y="100%-340px",
+    width="140", height="300px", 
+    autoWrap = false,
+    scrollBar = false,
+    color = "black",
+    fontSize = 15,
+  }, LeftContainer)
+end
+
+function BuildExitsConsole()
+  ExitsConsole = Geyser.MiniConsole:new({
+    name = "ExitsConsole",
+    x = 60, y = "100%-70px",
+    width = "180px", height = "40px",
+    autoWrap = true,
+    scrollBar = false,
+    color = "black",
+    fontSize = 10,
+  }, LeftContainer)
+end</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>RightUI Funtions</name>
+					<packageName></packageName>
+					<script>-- Define functions to draw right container UI
+
+function BuildRightContainer ()
+  RightContainer = RightContainer or Adjustable.Container:new({
+    Name = "RightContainer",
+    titleText = "Chat Log",
+    x="-20%", y="0%",
+    width = "20%", height= "100%-80",
+    adjLabelstyle = "background-color:rgba(0,0,0,100%); border: 2px solid rgb(20,20,20);",
+    buttonstyle=[[
+        QLabel{ border-radius: 3px; background-color: rgba(40,40,40,100%);}
+        QLabel::hover{ background-color: rgba(60,60,60,50%);}
+        ]],
+    titleTxtColor = "white",
+    autoload = false,
+    autosave = false,
+    locked = true,
+    attached = right,
+    lockStyle = light,
+    menuStyle = dark,
+  })
+end
+
+function BuildChatConsole ()
+  ChatLog = Geyser.MiniConsole:new({
+    name = "ChatLog",
+    --width="99%", height="48%", --for mapper
+    width="99%", height="99%-40",
+    autoWrap = true,
+    scrollBar = true,
+    color = "black",
+    fontSize = 11,
+  }, RightContainer)
+end
+
+function BuildMapLable()
+  ErionLabel = Geyser.Label:new({
+    name="MapLable",
+    x=5, y="51%",
+    width = "98%", height = "4%",
+    }, RightContainer)
+  ErionLabel:setColor("Black")
+  ErionLabel:setFontSize(9)
+  --ErionLabel:setFont("Bitstream Vera Sans Mono")
+  ErionLabel:setFont("Copperplate Gothic Light")
+  ErionLabel:echo("Erion Map", "grey", "cub")
+  
+
+end
+
+function BuildMapper ()
+
+  local mapper = Geyser.Mapper:new({
+    name = "ErionMap",
+    embedded = true,
+    x = 0, y = "56%", -- edit here if you want to move it
+    width = "100%", height = "50%"
+  }, RightContainer)
+
+end</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_Refresh Event</name>
+					<packageName></packageName>
+					<script>-- Does a full UI refresh
+
+function GUIRefresh (event)
+
+  --Left UI
+  
+  SetupGUI() -- Will need to move this
+  BuildLeftContainer()
+  BuildErionLabel()
+  BuildStatsConsole()
+  BuildMapNameConsole()
+  BuildMapConsole()
+  BuildExitsConsole()
+  
+  --Right UI
+  
+  BuildRightContainer()
+  BuildChatConsole()
+  
+  --Bottom UI
+  
+  BuildStatusBarContainer()
+  SetCMDStyle()
+  SetBarStyle()
+  
+  echo("UI Refreshed!\n")
+  
+end
+
+registerAnonymousEventHandler("GUI_Refresh", "GUIRefresh")
+
+</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_UpdateStatus Event (Left)</name>
+					<packageName></packageName>
+					<script>-- Function to redraw status console UI(s)
+
+function UpdateStatus (event, LVL, FLV, NXP, GLD, QPS, HPS, MDP, QTM, ETM, GTM, JTM, XPE, QPE, QTE)
+    clearWindow("StatsConsole")
+    
+    cecho("StatsConsole", "&lt;grey&gt;&lt;b&gt;Character Status&lt;/b&gt;".."\n")
+    cecho("StatsConsole", "------------------------------------\n")
+    cecho("StatsConsole", "&lt;grey&gt;Level: &lt;royal_blue&gt;"..LVL.."&lt;grey&gt;  Faux: &lt;royal_blue&gt;"..FLV.."\n")
+    cecho("StatsConsole", "&lt;grey&gt;EXP to Lvl: &lt;royal_blue&gt;"..NXP.."\n")
+    cecho("StatsConsole", "&lt;grey&gt;Gold: &lt;yellow&gt;"..GLD.."\n")
+    cecho("StatsConsole", "&lt;grey&gt;QP: &lt;purple&gt;"..QPS.."\n")
+    cecho("StatsConsole", "&lt;grey&gt;House Points: &lt;dark_green&gt;"..HPS.."\n")
+    cecho("StatsConsole", "&lt;grey&gt;Mud Pies: &lt;tan&gt;"..MDP.."\n")
+    cecho("StatsConsole", "\n")
+    cecho("StatsConsole", "&lt;grey&gt;Timers &lt;royal_blue&gt;\n")
+    cecho("StatsConsole", "------------------------------------\n")
+    if QTM == "" then cecho("StatsConsole", "&lt;grey&gt;Quest:&lt;cyan&gt;         Available!\n")
+    else cecho("StatsConsole", "&lt;grey&gt;Quest: &lt;white&gt;        "..QTM.."\n") end
+    if ETM == "" then cecho("StatsConsole", "&lt;grey&gt;Expedition:    &lt;cyan&gt;Available!\n")
+    else cecho("StatsConsole", "&lt;grey&gt;Expedition:&lt;white&gt;    "..ETM.."\n") end
+    if JTM == "" then cecho("StatsConsole", "&lt;grey&gt;Junkyard:&lt;cyan&gt;      Available!\n")
+    else cecho("StatsConsole", "&lt;grey&gt;Junkyard:&lt;white&gt;      "..JTM.."\n") end
+    if GTM == "" then cecho("StatsConsole", "&lt;grey&gt;GlobalQuest:&lt;cyan&gt;   Inactive!\n")
+    else cecho("StatsConsole", "&lt;grey&gt;GlobalQuest:&lt;white&gt;   "..GTM.."\n") end
+    cecho("StatsConsole", "\n")
+    cecho("StatsConsole", "&lt;grey&gt;&lt;b&gt;Events &lt;royal_blue&gt;\n")
+    cecho("StatsConsole", "------------------------------------\n")
+    
+    if (XPE ~= "" or nil) or (QPE ~= "" or nil) or (QTE ~= "" or nil) then
+
+      if (XPE ~= "") then
+        cecho("StatsConsole", "&lt;grey&gt;2x XP:&lt;white&gt;        "..XPE.."\n")
+      end
+       
+      if (QPE ~= "") then
+        cecho("StatsConsole", "&lt;grey&gt;2x QP:&lt;white&gt;        "..QPE.."\n")
+      end
+       
+      if (QTE ~= "") then
+        cecho("StatsConsole", "&lt;grey&gt;No Quest Timer:&lt;white&gt;"..QTE.."\n")
+      end
+       
+    else
+        cecho("StatsConsole", "&lt;grey&gt;No Events Active.\n")
+    end
+      
+         
+     
+end
+
+registerAnonymousEventHandler("GUI_UpdateStatus", "UpdateStatus")</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_UpdatePromp Event (Bottom)</name>
+					<packageName></packageName>
+					<script>-- Function to redraw Bottom Status Console UI
+
+function UpdatePrompt (event, CHP, MHP, CMP, MMP, THP, TNM, LMP, PRE, PHP)
+  clearWindow("StatusBar")
+
+  --Prompt Line 1
+  cecho("StatusBar","== [HP: ")
+  if (CHP/MHP) &gt;= 0.66 then 
+    cecho("StatusBar","&lt;green&gt;"..CHP.."&lt;grey&gt;/")
+  elseif (CHP/MHP) &gt;= 0.33 then 
+    cecho("StatusBar","&lt;yellow&gt;"..CHP.."&lt;grey&gt;/") 
+  else
+    cecho("StatusBar","&lt;red&gt;"..CHP.."&lt;grey&gt;/")
+  end
+  cecho("StatusBar","&lt;green&gt;"..MHP.."&lt;grey&gt;] [MP: ")
+  
+  if (CMP/MMP) &gt;= 0.66 then
+    cecho("StatusBar","&lt;cyan&gt;"..CMP.."&lt;grey&gt;/")
+  elseif (CMP/MMP) &gt;= 0.33 then
+    cecho("StatusBar","&lt;yellow&gt;"..CMP.."&lt;grey&gt;/")
+  else
+    cecho("StatusBar","&lt;red&gt;"..CMP.."&lt;grey&gt;/")
+  end
+  cecho("StatusBar","&lt;cyan&gt;"..MMP.."&lt;grey&gt;] [Limit: ")
+
+  if (LMP ~= "100" or " 100") then
+    cecho("StatusBar", "&lt;purple&gt;"..LMP.."%&lt;grey&gt;]")
+  else
+    cecho("StatusBar", "&lt;purple&gt;READY!&lt;grey&gt;]")
+  end
+  if PRE ~= "" then
+    CPRE = ansi2string(PRE)
+    cecho("StatusBar", " &lt;red&gt;"..PRE.." &lt;grey&gt;==\n")
+  else
+    cecho("StatusBar", " &lt;grey&gt;== \n")
+  end
+  
+  -- Prompt Line 2
+  
+  if (TNM == "") then
+    cecho("StatusBar", "&lt;grey&gt;== [Target: &lt;white&gt;None&lt;grey&gt;] ")
+  else
+    CTNM = ansi2string(TNM)
+    CTHP = ansi2string(THP)
+    cecho("StatusBar", "&lt;grey&gt;== [Target: &lt;white&gt;")
+    cecho("StatusBar", "&lt;white&gt;"..CTNM.."&lt;grey&gt; (HP: &lt;red&gt;"..CTHP.."&lt;grey&gt;) ] ")
+  end
+  
+  if PHP == "" then
+    cecho("StatusBar", "&lt;grey&gt;==\n")
+  else
+    cecho("StatusBar", "&lt;grey&gt;[Pets: ")
+    cecho("StatusBar", "&lt;white&gt;"..PHP.."&lt;grey&gt;] ==\n")
+  end
+  
+  hp = tonumber(CHP)
+  hp_max = tonumber(MHP)
+  hp_dec = (hp/hp_max)*100
+  hp_per = round(hp_dec, 0)
+  hpbar:setValue(hp,hp_max)
+  hpbar:setText("HP: "..hp_per.."%")
+  
+  mp = tonumber(CMP)
+  mp_max = tonumber(MMP)
+  mp_dec = (mp/mp_max)*100
+  mp_per = round(mp_dec, 0)
+  enbar:setValue(mp,mp_max)
+  enbar:setText("MP: "..mp_per.."%")
+  
+  
+  
+end
+
+registerAnonymousEventHandler("GUI_UpdatePrompt", "UpdatePrompt")</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_UpdateMapName Event (Left)</name>
+					<packageName></packageName>
+					<script>--Update the map information panel
+
+function UpdateMapName (event, RNM, ANM, RMS, VNM)
+  clearWindow("MapNameConsole")
+  
+  cecho("MapNameConsole", "&lt;b&gt;Area Map\n")
+  cecho("MapNameConsole", "---------------------------------\n")
+  cecho("MapNameConsole", "&lt;grey&gt;Area: &lt;royal_blue&gt;"..ANM.."\n")
+  cecho("MapNameConsole", "&lt;grey&gt;Room: &lt;royal_blue&gt;"..RNM.."\n")
+  cecho("MapNameConsole", "&lt;grey&gt;Sector: &lt;royal_blue&gt;"..RMS.."\n")
+  cecho("MapNameConsole", "&lt;grey&gt;VNUM: &lt;royal_blue&gt;"..VNM)
+  
+
+end
+
+registerAnonymousEventHandler("GUI_UpdateMapName", "UpdateMapName")</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_ReWrap Event</name>
+					<packageName></packageName>
+					<script>function Rewrap_Main ()
+  setWindowWrap("main", getColumnCount("main")-1)
+  debugc("Wrapping Main")
+  
+  local Num = getLastLineNumber("MainBuffer")
+
+  clearWindow()
+  for i = 0, Num, 1 do
+    moveCursor("MainBuffer", 0, i)
+    selectCurrentLine("MainBuffer")
+    copy("MainBuffer")
+    appendBuffer("main")
+  end
+  Rewrap_Chat()
+end
+
+function Rewrap_Chat ()
+  setWindowWrap("ChatLog", getColumnCount("ChatLog")-1)
+  debugc("Wrapping Chat")
+
+  local Num = getLastLineNumber("ChatBuffer")
+  
+  clearWindow("ChatLog")
+  for i = 0, Num-1, 1 do
+    moveCursor("ChatBuffer", 0, i)
+    selectCurrentLine("ChatBuffer")
+    copy("ChatBuffer")
+    appendBuffer("ChatLog")
+  end
+end
+ 
+
+registerAnonymousEventHandler("AdjustableContainerRepositionFinish", "Rewrap_Main")</script>
+					<eventHandlerList />
+				</Script>
+			</ScriptGroup>
+		</ScriptGroup>
+	</ScriptPackage>
+</MudletPackage>
