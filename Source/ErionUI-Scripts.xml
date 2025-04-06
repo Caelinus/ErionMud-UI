@@ -7,15 +7,10 @@
 			<packageName>ErionUI</packageName>
 			<script></script>
 			<eventHandlerList />
-			<ScriptGroup isActive="yes" isFolder="yes">
-				<name>ErionUI</name>
-				<packageName>ErionUI</packageName>
-				<script></script>
-				<eventHandlerList />
-				<Script isActive="yes" isFolder="no">
-					<name>ErionGUI Start Event</name>
-					<packageName></packageName>
-					<script>function StartUp ()
+			<Script isActive="yes" isFolder="no">
+				<name>ErionGUI Start Event</name>
+				<packageName></packageName>
+				<script>function StartUp ()
   
   --A couple of variables that I need to ensure are set at 0 initally
   CMap = 0
@@ -50,24 +45,24 @@
 end
 
 registerAnonymousEventHandler("sysConnectionEvent", "StartUp")</script>
-					<eventHandlerList />
-				</Script>
-				<Script isActive="yes" isFolder="no">
-					<name>UI System Settings Event</name>
-					<packageName></packageName>
-					<script>function SetMudSettings()
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>UI System Settings Event</name>
+				<packageName></packageName>
+				<script>function SetMudSettings()
   send("toggle +tick", false)
   send("toggle +compact", false)
   send("prompt #1%h#2%H#3%m#4%M#5%p#6%T#7%x#8%X#9%g#10%C#11%u#12%r#13%e#14%L#15%I#16%n#17%B#18%S#19%R#20%f#21%F#22%J#23%j#24%G#25%k#26%K#27%N#28%P#29%Z#", false)
 end
 
 registerAnonymousEventHandler("SetDefaultMudSettings", "SetMudSettings")</script>
-					<eventHandlerList />
-				</Script>
-				<Script isActive="yes" isFolder="no">
-					<name>Initialize UI Event</name>
-					<packageName></packageName>
-					<script>function InitUI ()
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Initialize UI Event</name>
+				<packageName></packageName>
+				<script>function InitUI ()
 
 --Buffers for word wrapping
   createBuffer("MainBuffer")
@@ -109,12 +104,12 @@ registerAnonymousEventHandler("SetDefaultMudSettings", "SetMudSettings")</script
 end
 
 registerAnonymousEventHandler("InitializeUI", "InitUI")</script>
-					<eventHandlerList />
-				</Script>
-				<Script isActive="yes" isFolder="no">
-					<name>FunctionLibrary</name>
-					<packageName></packageName>
-					<script>--Just functions I may need to call
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>FunctionLibrary</name>
+				<packageName></packageName>
+				<script>--Just functions I may need to call
 
 --Rounidng Function
   function round(x, n)
@@ -149,17 +144,17 @@ registerAnonymousEventHandler("InitializeUI", "InitUI")</script>
       end, 1)
   end
     </script>
-					<eventHandlerList />
-				</Script>
-				<ScriptGroup isActive="yes" isFolder="yes">
-					<name>GUI Events and Functions</name>
+				<eventHandlerList />
+			</Script>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>GUI Events and Functions</name>
+				<packageName></packageName>
+				<script></script>
+				<eventHandlerList />
+				<Script isActive="yes" isFolder="no">
+					<name>BottomUI Functions</name>
 					<packageName></packageName>
-					<script></script>
-					<eventHandlerList />
-					<Script isActive="yes" isFolder="no">
-						<name>BottomUI Functions</name>
-						<packageName></packageName>
-						<script>-- Functions to handle building the bottom UI
+					<script>-- Functions to handle building the bottom UI
 
 function BuildStatusBarContainer () --Define Status Bar
   StatusBar = Geyser.MiniConsole:new({
@@ -225,12 +220,12 @@ function SetBarStyle () --Sets bar settings
   ]])
   enbar:setAlignment("center")
 end</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>LeftUI Functions</name>
-						<packageName></packageName>
-						<script>-- Define functions to draw left container UI
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>LeftUI Functions</name>
+					<packageName></packageName>
+					<script>-- Define functions to draw left container UI
 
 function BuildLeftContainer()
   LeftContainer = Geyser.Container:new({
@@ -300,12 +295,12 @@ function BuildExitsConsole()
     fontSize = 10,
   }, LeftContainer)
 end</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>RightUI Funtions</name>
-						<packageName></packageName>
-						<script>-- Define functions to draw right container UI
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>RightUI Funtions</name>
+					<packageName></packageName>
+					<script>-- Define functions to draw right container UI
 
 function BuildRightContainer ()
   RightContainer = RightContainer or Adjustable.Container:new({
@@ -365,12 +360,12 @@ function BuildMapper ()
   }, RightContainer)
 
 end</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>GUI_Refresh Event</name>
-						<packageName></packageName>
-						<script>-- Does a full UI refresh
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_Refresh Event</name>
+					<packageName></packageName>
+					<script>-- Does a full UI refresh
 
 function GUIRefresh (event)
 
@@ -402,12 +397,12 @@ end
 registerAnonymousEventHandler("GUI_Refresh", "GUIRefresh")
 
 </script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>GUI_UpdateStatus Event (Left)</name>
-						<packageName></packageName>
-						<script>-- Function to redraw status console UI(s)
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_UpdateStatus Event (Left)</name>
+					<packageName></packageName>
+					<script>-- Function to redraw status console UI(s)
 
 function UpdateStatus (event, LVL, FLV, NXP, GLD, QPS, HPS, MDP, QTM, ETM, GTM, JTM, XPE, QPE, QTE, PLT)
     clearWindow("StatsConsole")
@@ -460,12 +455,12 @@ function UpdateStatus (event, LVL, FLV, NXP, GLD, QPS, HPS, MDP, QTM, ETM, GTM, 
 end
 
 registerAnonymousEventHandler("GUI_UpdateStatus", "UpdateStatus")</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>GUI_UpdatePromp Event (Bottom)</name>
-						<packageName></packageName>
-						<script>-- Function to redraw Bottom Status Console UI
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_UpdatePromp Event (Bottom)</name>
+					<packageName></packageName>
+					<script>-- Function to redraw Bottom Status Console UI
 
 function UpdatePrompt (event, CHP, MHP, CMP, MMP, THP, TNM, LMP, PRE, PHP)
   clearWindow("StatusBar")
@@ -539,12 +534,12 @@ function UpdatePrompt (event, CHP, MHP, CMP, MMP, THP, TNM, LMP, PRE, PHP)
 end
 
 registerAnonymousEventHandler("GUI_UpdatePrompt", "UpdatePrompt")</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>GUI_UpdateMapName Event (Left)</name>
-						<packageName></packageName>
-						<script>--Update the map information panel
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_UpdateMapName Event (Left)</name>
+					<packageName></packageName>
+					<script>--Update the map information panel
 
 function UpdateMapName (event, RNM, ANM, RMS, VNM)
   clearWindow("MapNameConsole")
@@ -560,12 +555,12 @@ function UpdateMapName (event, RNM, ANM, RMS, VNM)
 end
 
 registerAnonymousEventHandler("GUI_UpdateMapName", "UpdateMapName")</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>GUI_ReWrap Event</name>
-						<packageName></packageName>
-						<script>function Rewrap_Main ()
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>GUI_ReWrap Event</name>
+					<packageName></packageName>
+					<script>function Rewrap_Main ()
   setWindowWrap("main", getColumnCount("main")-1)
   debugc("Wrapping Main")
   
@@ -598,9 +593,8 @@ end
  
 
 registerAnonymousEventHandler("AdjustableContainerRepositionFinish", "Rewrap_Main")</script>
-						<eventHandlerList />
-					</Script>
-				</ScriptGroup>
+					<eventHandlerList />
+				</Script>
 			</ScriptGroup>
 		</ScriptGroup>
 	</ScriptPackage>

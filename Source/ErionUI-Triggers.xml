@@ -266,6 +266,13 @@ moveCursorDown("ScoreBuffer")</script>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>ExitsCapture</name>
 					<script>clearWindow("ExitsConsole")
+--Add in exit links courtesy of TyrannosaurusRoy
+for _, dir in ipairs{"north", "south", "east", "west", "up", "down"} do
+  if selectString(dir, 1) &gt; -1 then
+    setLink("send'"..dir.."'", "")
+    setUnderline(true)
+  end
+end
 selectCurrentLine()
 copy()
 ExitsConsole:appendBuffer()
@@ -281,7 +288,7 @@ replaceLine("")</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>(^\[Exits\:.+)</string>
+						<string>(^\[Exits\:(\s.+)+\])</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
