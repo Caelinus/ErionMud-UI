@@ -25,3 +25,5 @@ Intallation Instructions:
 8. Once logged in, a message will appear in green text with a purple link that says "CLICK HERE!!"
 9. Click that link the first time you launch, or if some setting get messed up.
 
+Special Thanks:
+- TyrannosaurusRoy for adding clickable Exits.
