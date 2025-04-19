@@ -13,7 +13,7 @@ Screenshot:
 ![image](https://github.com/user-attachments/assets/a4a1fcb0-e380-48b2-bbae-2617d50b819e)
 
 
-Intallation Instructions:
+Installation Instructions:
 
 1. Press "New" in Mudlet Connection menu.
 2. Enter ErionMud (or whatever) as profile name, erionmud.com as server address, and 1234 as the port number.
