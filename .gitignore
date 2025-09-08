@@ -1,0 +1,16 @@
+# Build artifacts
+*.mpackage
+
+# Temporary files
+/tmp/
+*.tmp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
