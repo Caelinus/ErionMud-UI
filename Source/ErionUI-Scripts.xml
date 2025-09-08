@@ -85,6 +85,9 @@ registerAnonymousEventHandler("SetDefaultMudSettings", "SetMudSettings")</script
   BuildMapConsole()
   BuildExitsConsole()
   
+  LeftContainer:attachToBorder("left")
+  LeftContainer:connectToBorder("left")
+  
 --Right (LeftUI Functions)
   BuildRightContainer()
   BuildChatConsole()
@@ -379,10 +382,16 @@ function GUIRefresh (event)
   BuildMapConsole()
   BuildExitsConsole()
   
+  LeftContainer:attachToBorder("left")
+  LeftContainer:connectToBorder("left")
+  
   --Right UI
   
   BuildRightContainer()
   BuildChatConsole()
+  
+  RightContainer:attachToBorder("right")
+  RightContainer:connectToBorder("right")
   
   --Bottom UI
   
