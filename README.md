@@ -1,5 +1,8 @@
 # ErionMud-UI
 
+!NOTE!: There is a newer take on this UI at https://github.com/ssharpjr/erionmud-ui.
+
+It is much better coded than this version, which I did entirely by hand inside Mudlet.
 
 Minimalist Mudlet UI for ErionMud.
 
